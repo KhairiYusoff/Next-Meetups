@@ -51,7 +51,6 @@ const HomePage = (props) => {
 
 export async function getStaticProps() {
     // fetch data from an API
-    MongoClient.connect();
 
     const client = await MongoClient.connect('mongodb+srv://khairi:tabligh@cluster0.turpfle.mongodb.net/meetups?retryWrites=true&w=majority');
 
@@ -61,17 +60,20 @@ export async function getStaticProps() {
 
     const meetups = await meetupsCollection.find().toArray();
 
+    console.log(meetups)
+
     return {
         props: {
             meetups: meetups.map(meetup => ({
-                title: meetup.data.title,
-                address: meetup.data.address,
-                image: meetup.data.image,
+                title: meetup.title,
+                address: meetup.address,
+                image: meetup.image,
                 id: meetup._id.toString()
             }))
         },
         revalidate: 1
-    }
+    };
+
 }
 
 export default HomePage;
